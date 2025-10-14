@@ -1,0 +1,107 @@
+[
+  {
+    "nombre": "Coto Sanabria",
+    "provincia": "Zamora",
+    "tipo_bosque": "Robledal",
+    "latitud": 42.133,
+    "longitud": -6.716
+  },
+  {
+    "nombre": "Coto Gredos",
+    "provincia": "Ávila",
+    "tipo_bosque": "Pinar",
+    "latitud": 40.350,
+    "longitud": -5.250
+  },
+  {
+    "nombre": "Coto Urbión",
+    "provincia": "Soria",
+    "tipo_bosque": "Pinar",
+    "latitud": 41.980,
+    "longitud": -2.900
+  },
+  {
+    "nombre": "Coto Las Batuecas",
+    "provincia": "Salamanca",
+    "tipo_bosque": "Castañar",
+    "latitud": 40.500,
+    "longitud": -6.100
+  },
+  {
+    "nombre": "Coto Sierra de Francia",
+    "provincia": "Salamanca",
+    "tipo_bosque": "Robledal",
+    "latitud": 40.600,
+    "longitud": -6.000
+  },
+  {
+    "nombre": "Coto La Demanda",
+    "provincia": "Burgos",
+    "tipo_bosque": "Hayedo",
+    "latitud": 42.200,
+    "longitud": -3.100
+  },
+  {
+    "nombre": "Coto Moncayo",
+    "provincia": "Zaragoza",
+    "tipo_bosque": "Hayedo",
+    "latitud": 41.800,
+    "longitud": -1.800
+  },
+  {
+    "nombre": "Coto O Courel",
+    "provincia": "Lugo",
+    "tipo_bosque": "Mixto",
+    "latitud": 42.600,
+    "longitud": -7.200
+  },
+  {
+    "nombre": "Coto Sierra de Aracena",
+    "provincia": "Huelva",
+    "tipo_bosque": "Encinar",
+    "latitud": 37.900,
+    "longitud": -6.700
+  },
+  {
+    "nombre": "Coto Montes de Toledo",
+    "provincia": "Toledo",
+    "tipo_bosque": "Encinar",
+    "latitud": 39.500,
+    "longitud": -4.200
+  },
+  {
+    "nombre": "Coto Sierra de Cazorla",
+    "provincia": "Jaén",
+    "tipo_bosque": "Pinar",
+    "latitud": 37.900,
+    "longitud": -2.900
+  },
+  {
+    "nombre": "Coto Sierra de Baza",
+    "provincia": "Granada",
+    "tipo_bosque": "Pinar",
+    "latitud": 37.350,
+    "longitud": -2.800
+  },
+  {
+    "nombre": "Coto Sierra de Gata",
+    "provincia": "Cáceres",
+    "tipo_bosque": "Robledal",
+    "latitud": 40.200,
+    "longitud": -6.600
+  },
+  {
+    "nombre": "Coto Sierra de Ancares",
+    "provincia": "León",
+    "tipo_bosque": "Mixto",
+    "latitud": 42.800,
+    "longitud": -6.900
+  },
+  {
+    "nombre": "Coto Sierra de la Demanda",
+    "provincia": "La Rioja",
+    "tipo_bosque": "Hayedo",
+    "latitud": 42.200,
+    "longitud": -2.900
+  }
+]
