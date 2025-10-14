@@ -1,40 +1,71 @@
 # Setómetro
 
-Setómetro is an Android application designed for mushroom hunting enthusiasts. This app allows users to register weather data (rain and temperature) for selected mushroom hunting areas and estimates the probability of mushroom appearance based on environmental conditions and forest types.
+Setómetro es una app Android en Kotlin con Jetpack Compose para monitorizar condiciones meteorológicas y estimar la probabilidad de aparición de setas en cotos micológicos de España.
 
-## Features
+## 📁 Estructura principal del proyecto
 
-- **Weather Data Registration**: Automatically fetches and stores weather data from the Open-Meteo API.
-- **Mushroom Area Management**: Users can select and manage multiple mushroom hunting areas.
-- **Probability Estimation**: Calculates the likelihood of mushroom appearance based on weather conditions and the type of forest.
-- **User-Friendly Interface**: Built using Jetpack Compose for a modern and responsive UI.
+```
+Setometro/
+├── app/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/setometro/
+│   │   │   │   ├── data/                # Entidades Room, DAOs, repositorio, API Open-Meteo
+│   │   │   │   ├── domain/              # Lógica de probabilidad y modelos de especies
+│   │   │   │   ├── ui/
+│   │   │   │   │   ├── components/      # Componentes reutilizables (WeatherCard, etc)
+│   │   │   │   │   ├── screens/         # Pantallas principales (Dashboard, Selección, Detalle, Setas, Configuración, NuevoCoto)
+│   │   │   │   │   ├── theme/           # Colores, tipografía, estilos
+│   │   │   │   │   └── SetometroNavHost.kt # Navegación Compose
+│   │   │   │   ├── viewmodel/           # MainViewModel y lógica de UI
+│   │   │   ├── res/
+│   │   │   │   ├── values/              # strings.xml, colors.xml, themes.xml
+│   │   │   │   └── ...
+│   │   │   ├── assets/
+│   │   │   │   └── cotos.json           # Ejemplo de cotos micológicos
+├── build.gradle
+├── README.md
+└── ...
+```
 
-## Getting Started
+## ⚙️ Esquema de funcionamiento
 
-### Prerequisites
+- El usuario selecciona cotos desde un mapa o lista, o añade nuevos manualmente.
+- La app descarga automáticamente los datos meteorológicos (lluvia y temperatura) de cada coto desde la API de Open-Meteo.
+- Los datos se almacenan en la base de datos local (Room).
+- Se calcula la probabilidad de aparición de setas según las condiciones y el tipo de bosque.
+- El usuario puede ver gráficos, exportar registros a CSV, importar datos y forzar actualización manual.
 
-- Android Studio installed on your machine.
-- Basic knowledge of Kotlin and Android development.
+## 📲 Instalación en dispositivo Android
 
-### Installation
+1. Abre el proyecto en **Android Studio**.
+2. Conecta tu móvil Android por USB y activa la **depuración USB**.
+3. Haz clic en el botón “Run” (▶️) para compilar e instalar la app en tu dispositivo.
+4. Alternativamente, genera un APK desde “Build > Build APK(s)” y transfiérelo a tu móvil para instalarlo manualmente.
 
-1. Clone the repository:
-   ```
-   git clone <repository-url>
-   ```
-2. Open the project in Android Studio.
-3. Sync the project with Gradle files.
-4. Run the application on an Android device or emulator.
+## 🐞 Depuración y desarrollo
 
-### Usage
+- Puedes depurar la app usando un **emulador Android** (AVD) o un dispositivo físico.
+- Pon breakpoints, inspecciona variables y usa el logcat de Android Studio para ver mensajes y errores.
+- Los cambios en el código pueden probarse rápidamente con “Run” o “Debug” en Android Studio.
 
-- Launch the app to view the home screen displaying registered mushroom areas and their current weather conditions.
-- Select a mushroom area to view detailed information, including weather graphs and mushroom probability estimates.
+## 📝 Archivos principales
 
-## Contributing
+- `MainActivity.kt`: Entrada principal de la app.
+- `data/Entities.kt`, `Database.kt`, `WeatherRepository.kt`, `OpenMeteoApi.kt`: Modelos, base de datos y acceso a datos.
+- `domain/ProbabilidadSetas.kt`: Lógica de probabilidad de aparición de setas.
+- `ui/screens/`: Pantallas principales de la app.
+- `ui/components/WeatherCard.kt`: Componente visual de condiciones meteorológicas.
+- `ui/theme/`: Colores, tipografía y estilos visuales.
+- `viewmodel/MainViewModel.kt`: Lógica de presentación y gestión de estado.
+- `assets/cotos.json`: Ejemplo de cotos micológicos.
 
-Contributions are welcome! Please open an issue or submit a pull request for any enhancements or bug fixes.
+## 🚀 Notas
 
-## License
+- Todos los datos se almacenan localmente, no requiere servidor externo.
+- Puedes personalizar los cotos, especies y lógica de probabilidad según tus necesidades.
+- Para publicar en Google Play, deberás firmar el APK con una clave de producción.
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+---
+
+¿Dudas o sugerencias? ¡Abre un issue en el repositorio!
