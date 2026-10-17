@@ -1,11 +1,38 @@
 <resources>
     <string name="app_name">Setómetro</string>
-    <string name="welcome_message">Welcome to Setómetro!</string>
-    <string name="select_area">Select a Mushroom Hunting Area</string>
-    <string name="temperature_label">Temperature:</string>
-    <string name="rain_label">Rainfall:</string>
-    <string name="mushroom_probability">Estimated Mushroom Probability:</string>
-    <string name="forest_type_label">Forest Type:</string>
-    <string name="loading">Loading...</string>
-    <string name="error_fetching_data">Error fetching data. Please try again.</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="cotos">Cotos</string>
+    <string name="setas">Setas</string>
+    <string name="configuracion">Configuración</string>
+    <string name="temperatura">Temperatura</string>
+    <string name="lluvia">Lluvia</string>
+    <string name="probabilidad">Probabilidad</string>
+    <string name="alta">Alta</string>
+    <string name="media">Media</string>
+    <string name="baja">Baja</string>
+    <string name="seleccionar_cotos">Seleccionar Cotos</string>
+    <string name="mapa">Mapa</string>
+    <string name="lista">Lista</string>
+    <string name="nuevo_coto">Nuevo Coto</string>
+    <string name="nombre">Nombre</string>
+    <string name="provincia">Provincia</string>
+    <string name="tipo_bosque">Tipo de Bosque</string>
+    <string name="coordenadas">Coordenadas</string>
+    <string name="guardar">Guardar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="detalle_coto">Detalle del Coto</string>
+    <string name="ultimos_10_dias">Últimos 10 días</string>
+    <string name="boletus_edulis">Boletus edulis</string>
+    <string name="boletus_pinicola">Boletus pinícola</string>
+    <string name="niscalo">Níscalo</string>
+    <string name="amanita_caesarea">Amanita caesarea</string>
+    <string name="actualizar_datos">Actualizar Datos</string>
+    <string name="exportar_csv">Exportar CSV</string>
+    <string name="cargando">Cargando...</string>
+    <string name="error_conexion">Error de conexión</string>
+    <string name="sin_datos">Sin datos disponibles</string>
+    <string name="pino">Pino</string>
+    <string name="roble_castano_haya">Roble/Castaño/Haya</string>
+    <string name="encina_mixto">Encina/Mixto</string>
+    <!-- Google Maps API key removed for free version -->
 </resources>

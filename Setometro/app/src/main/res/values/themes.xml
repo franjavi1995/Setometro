@@ -1,18 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Setometro" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primaryVariant</item>
-        <item name="colorOnPrimary">@color/onPrimary</item>
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondaryVariant</item>
-        <item name="colorOnSecondary">@color/onSecondary</item>
-        <item name="colorBackground">@color/background</item>
-        <item name="colorOnBackground">@color/onBackground</item>
-        <item name="colorSurface">@color/surface</item>
-        <item name="colorOnSurface">@color/onSurface</item>
-        <item name="shapeSmall">@style/ShapeSmall</item>
-        <item name="shapeMedium">@style/ShapeMedium</item>
-        <item name="shapeLarge">@style/ShapeLarge</item>
-        <item name="android:windowBackground">@color/background</item>
-    </style>
+    <style name="Theme.Setometro" parent="android:Theme.Material.Light" />
 </resources>

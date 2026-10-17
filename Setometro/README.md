@@ -1,71 +1,64 @@
 # Setómetro
 
-Setómetro es una app Android en Kotlin con Jetpack Compose para monitorizar condiciones meteorológicas y estimar la probabilidad de aparición de setas en cotos micológicos de España.
+Aplicación Android nativa en Kotlin y Jetpack Compose para consultar condiciones meteorológicas en ubicaciones guardadas y, cuando haya datos micológicos fiables, contextualizarlas por especie y hábitat.
 
-## 📁 Estructura principal del proyecto
+## Principio de datos
 
+La app no debe fabricar datos ni presentar valores de ejemplo como reales. Si una consulta falla o una fuente no ofrece un dato, se muestra esa ausencia y el motivo. El tiempo favorable no confirma que haya setas.
+
+## Estado actual del MVP v2
+
+- **Tiempo por ubicación guardada:** consulta Open-Meteo al abrir el detalle de una ubicación, usando sus coordenadas, condiciones actuales y una serie diaria de los 15 días anteriores.
+- **Naturaleza de los datos:** Open-Meteo devuelve datos de modelos meteorológicos para una cuadrícula asociada a las coordenadas solicitadas. No son mediciones de una estación situada exactamente en el punto; la pantalla diferencia las coordenadas solicitadas de las coordenadas de modelo y muestra elevación, zona horaria, fecha y atribución.
+- **Sin datos falsos:** se eliminaron la generación meteorológica aleatoria, las cifras de probabilidad de muestra y los fallbacks meteorológicos del detalle. Los errores de API se muestran en pantalla.
+- **Puntos de consulta:** el mapa permite mantener pulsado un punto o consultar la ubicación actual del dispositivo. La pantalla consulta Open-Meteo sin guardar nada automáticamente; el botón «Guardar punto» permite ponerle nombre y añadirlo a las ubicaciones monitorizadas. Se muestra el origen y, para GPS, la precisión comunicada por Android.
+- **Ubicaciones:** se pueden guardar puntos manualmente o desde una consulta del mapa/GPS. No hay un inventario oficial/verificado de cotos de toda España. El mapa muestra ubicaciones locales guardadas; no representa presencia o ausencia de setas.
+- **Predicción micológica:** no se calcula ni se muestra porcentaje de presencia. No existe aún un modelo validado por especie y región ni datos de hábitat suficientemente verificados.
+- **Catálogo:** se mantiene vacío hasta incorporar información de especies y condiciones respaldada por fuentes micológicas verificables.
+- **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS. Feedback de campo sigue pendiente.
+- **Exportación CSV:** fuera del alcance del MVP actual.
+
+La app consulta la API Forecast de Open-Meteo (`/v1/forecast`) con `past_days=15`; no usa ya OpenWeatherMap. La respuesta de la API se valida y presenta en la pantalla, sin persistirla en Room ni ofrecer caché offline todavía.
+
+Open-Meteo requiere atribución **CC BY 4.0** junto a los datos. Su API gratuita es solo para uso no comercial y tiene límites de llamadas; antes de monetizar o distribuir comercialmente, hay que contratar un plan con licencia adecuada o elegir otra fuente. Consulta los [términos](https://open-meteo.com/en/terms), la [licencia y atribución](https://open-meteo.com/en/licence) y la [documentación de la API](https://open-meteo.com/en/docs).
+
+## Arquitectura
+
+- Kotlin, Android y Jetpack Compose.
+- MVVM, `StateFlow`, Coroutines y navegación Compose.
+- Room para datos locales del usuario.
+- Retrofit/OkHttp para Open-Meteo.
+- Hilt para inyección de dependencias.
+- OpenStreetMap/osmdroid para el mapa de ubicaciones guardadas.
+
+El flujo esperado es `pantalla Compose → ViewModel → Repository → API o Room`. El detalle consulta el tiempo al abrirlo. Las actualizaciones periódicas de tiempo se han desactivado.
+
+El código está en `app/src/main/java/com/setometro/app/`. La arquitectura, los comandos de desarrollo y los pendientes están en [GUIA_PROYECTO.md](./GUIA_PROYECTO.md); las pautas para cambios con Copilot están en [.github/copilot-instructions.md](./.github/copilot-instructions.md).
+
+## Compilar y probar
+
+Requisitos: JDK 17 o superior compatible con Android Gradle Plugin, Android SDK (API 34) y un emulador o dispositivo Android (minSdk 24).
+
+Comandos habituales desde PowerShell en la raíz del proyecto:
+
+```powershell
+.\gradlew.bat testDebugUnitTest
+.\gradlew.bat assembleDebug
+.\gradlew.bat installDebug
 ```
-Setometro/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/setometro/
-│   │   │   │   ├── data/                # Entidades Room, DAOs, repositorio, API Open-Meteo
-│   │   │   │   ├── domain/              # Lógica de probabilidad y modelos de especies
-│   │   │   │   ├── ui/
-│   │   │   │   │   ├── components/      # Componentes reutilizables (WeatherCard, etc)
-│   │   │   │   │   ├── screens/         # Pantallas principales (Dashboard, Selección, Detalle, Setas, Configuración, NuevoCoto)
-│   │   │   │   │   ├── theme/           # Colores, tipografía, estilos
-│   │   │   │   │   └── SetometroNavHost.kt # Navegación Compose
-│   │   │   │   ├── viewmodel/           # MainViewModel y lógica de UI
-│   │   │   ├── res/
-│   │   │   │   ├── values/              # strings.xml, colors.xml, themes.xml
-│   │   │   │   └── ...
-│   │   │   ├── assets/
-│   │   │   │   └── cotos.json           # Ejemplo de cotos micológicos
-├── build.gradle
-├── README.md
-└── ...
+
+En Windows, el nombre actual de la carpeta contiene `ó`; Android Gradle Plugin puede bloquear builds y pruebas desde esa ruta. El Wrapper ya está reparado. Para trabajar desde una unidad temporal ASCII, elige una letra libre y ejecuta en PowerShell:
+
+```powershell
+subst V: "<ruta-completa-del-proyecto>"
+Set-Location V:\
+.\gradlew.bat testDebugUnitTest assembleDebug
 ```
 
-## ⚙️ Esquema de funcionamiento
+Adapta la ruta y la letra a tu equipo. La compilación y las pruebas unitarias se verificaron así con Gradle 8.13. Como alternativa, mueve el proyecto a una ruta sin caracteres no ASCII.
 
-- El usuario selecciona cotos desde un mapa o lista, o añade nuevos manualmente.
-- La app descarga automáticamente los datos meteorológicos (lluvia y temperatura) de cada coto desde la API de Open-Meteo.
-- Los datos se almacenan en la base de datos local (Room).
-- Se calcula la probabilidad de aparición de setas según las condiciones y el tipo de bosque.
-- El usuario puede ver gráficos, exportar registros a CSV, importar datos y forzar actualización manual.
+El APK debug se genera en `app/build/outputs/apk/debug/app-debug.apk`. Las pruebas unitarias están en `app/src/test/`; las pruebas instrumentadas/UI aún están pendientes.
 
-## 📲 Instalación en dispositivo Android
+## Datos locales anteriores
 
-1. Abre el proyecto en **Android Studio**.
-2. Conecta tu móvil Android por USB y activa la **depuración USB**.
-3. Haz clic en el botón “Run” (▶️) para compilar e instalar la app en tu dispositivo.
-4. Alternativamente, genera un APK desde “Build > Build APK(s)” y transfiérelo a tu móvil para instalarlo manualmente.
-
-## 🐞 Depuración y desarrollo
-
-- Puedes depurar la app usando un **emulador Android** (AVD) o un dispositivo físico.
-- Pon breakpoints, inspecciona variables y usa el logcat de Android Studio para ver mensajes y errores.
-- Los cambios en el código pueden probarse rápidamente con “Run” o “Debug” en Android Studio.
-
-## 📝 Archivos principales
-
-- `MainActivity.kt`: Entrada principal de la app.
-- `data/Entities.kt`, `Database.kt`, `WeatherRepository.kt`, `OpenMeteoApi.kt`: Modelos, base de datos y acceso a datos.
-- `domain/ProbabilidadSetas.kt`: Lógica de probabilidad de aparición de setas.
-- `ui/screens/`: Pantallas principales de la app.
-- `ui/components/WeatherCard.kt`: Componente visual de condiciones meteorológicas.
-- `ui/theme/`: Colores, tipografía y estilos visuales.
-- `viewmodel/MainViewModel.kt`: Lógica de presentación y gestión de estado.
-- `assets/cotos.json`: Ejemplo de cotos micológicos.
-
-## 🚀 Notas
-
-- Todos los datos se almacenan localmente, no requiere servidor externo.
-- Puedes personalizar los cotos, especies y lógica de probabilidad según tus necesidades.
-- Para publicar en Google Play, deberás firmar el APK con una clave de producción.
-
----
-
-¿Dudas o sugerencias? ¡Abre un issue en el repositorio!
+La migración de la base de datos elimina registros meteorológicos y probabilidades heredados porque se generaban con valores ficticios, elimina el catálogo inicial sin fuentes verificadas y retira los puntos de demostración precargados conocidos. Conserva ubicaciones personalizadas que no coincidan con esos puntos de muestra.

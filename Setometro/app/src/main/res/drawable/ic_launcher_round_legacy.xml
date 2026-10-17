@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- Fondo verde circular -->
+    <path
+        android:fillColor="#2E7D32"
+        android:pathData="M24,4 A20,20 0 1,1 24,44 A20,20 0 1,1 24,4 Z" />
+    
+    <!-- Círculo blanco -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,10 A14,14 0 1,1 24,38 A14,14 0 1,1 24,10 Z" />
+    
+    <!-- Sombrero del hongo -->
+    <path
+        android:fillColor="#D84315"
+        android:pathData="M24,14 C19,14 16,17 16,22 C16,27 19,30 24,30 C29,30 32,27 32,22 C32,17 29,14 24,14 Z" />
+    
+    <!-- Puntos blancos -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,18 A1,1 0 1,1 20,20 A1,1 0 1,1 20,18 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M26,20 A0.8,0.8 0 1,1 26,21.6 A0.8,0.8 0 1,1 26,20 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,24 A0.5,0.5 0 1,1 22,25 A0.5,0.5 0 1,1 22,24 Z" />
+    
+    <!-- Pie del hongo -->
+    <path
+        android:fillColor="#F5F5DC"
+        android:pathData="M22,30 L26,30 L26,34 L22,34 Z" />
+    
+    <!-- Líneas de señal -->
+    <path
+        android:fillColor="#F5F5DC"
+        android:strokeColor="#F5F5DC"
+        android:strokeWidth="1"
+        android:pathData="M24,34 Q26,36 24,38 Q22,36 24,34" />
+    <path
+        android:fillColor="#F5F5DC"
+        android:strokeColor="#F5F5DC"
+        android:strokeWidth="1"
+        android:pathData="M24,36 Q28,38 24,40 Q20,38 24,36" />
+    
+    <!-- Gráfico de barras -->
+    <path
+        android:fillColor="#4CAF50"
+        android:pathData="M18,32 L19.5,32 L19.5,35 L18,35 Z" />
+    <path
+        android:fillColor="#66BB6A"
+        android:pathData="M20,31 L21.5,31 L21.5,35 L20,35 Z" />
+    <path
+        android:fillColor="#81C784"
+        android:pathData="M22,30 L23.5,30 L23.5,35 L22,35 Z" />
+    <path
+        android:fillColor="#A5D6A7"
+        android:pathData="M24,29 L25.5,29 L25.5,35 L24,35 Z" />
+    <path
+        android:fillColor="#C8E6C9"
+        android:pathData="M26,28 L27.5,28 L27.5,35 L26,35 Z" />
+</vector>
