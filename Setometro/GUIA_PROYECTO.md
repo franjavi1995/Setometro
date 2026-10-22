@@ -27,6 +27,8 @@ Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que
 | Feedback de campo | Pendiente; la propuesta es guardarlo localmente y distinguir «encontré», «no encontré» y «no busqué». |
 | CSV | Aplazado. |
 
+La investigación inicial y el mapa de evidencia, incluyendo límites por especie, datos disponibles, retos de cotos/hábitat y requisitos para ordenar ubicaciones, está en [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md). Incluye estudios españoles para *B. edulis* y *L. deliciosus* y fichas descriptivas de sociedades micológicas, separadas por nivel de evidencia. No se han establecido umbrales micológicos numéricos ni un catálogo nacional de cotos; Micocyl es un ejemplo regional por verificar para reutilización.
+
 ## API meteorológica
 
 La integración anterior usaba OpenWeatherMap con un endpoint de pronóstico de cinco días y una clave incorporada a la app. El repositorio ignoraba el cuerpo de esa respuesta y generaba condiciones sintéticas; esos valores ya no se usan.
@@ -58,9 +60,11 @@ Flujo de datos: `pantalla Compose → ViewModel/StateFlow → Repository → API
 2. **Hecho — Elegir y probar proveedor:** Open-Meteo, apropiada para el MVP personal y con atribución. Se validó en vivo un punto de Almendralejo; el proveedor devolvió tiempo actual y días anteriores junto a la ubicación/elevación del modelo.
 3. **Hecho — Eliminar salidas ficticias:** retiradas la generación meteorológica aleatoria, los fallbacks de muestra y el cálculo de porcentajes no validado mostrado por la UI. La migración de Room limpia el clima/probabilidades heredados, elimina especies de muestra y puntos de demostración conocidos, conservando ubicaciones personalizadas.
 4. **Hecho — Consultar puntos indicados:** el mapa permite seleccionar un punto con pulsación larga o solicitar ubicación GPS bajo demanda. Ambas opciones muestran la precisión/procedencia conocida, consultan la misma API real por coordenadas y no guardan automáticamente. «Guardar punto» añade un nombre y lo incorpora a las ubicaciones monitorizadas.
-5. **Pendiente — Conocimiento micológico verificable:** construir catálogo y reglas por especie/región solo con fuentes expertas trazables y cobertura suficiente.
-6. **Pendiente — Feedback local:** registrar especie, fecha, coordenada y «encontré/no encontré/no busqué».
-7. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.
+5. **En curso — Mapa de conocimiento micológico:** consultar [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md); hay evidencia localizada sobre producción en pinares españoles para *Boletus edulis* y *Lactarius deliciosus*, pero no reglas numéricas generales. Completar fichas de especies sin extrapolar.
+6. **Pendiente — Datos de hábitat y cotos:** comprobar SIOSE/MFE/IFN, resolución y licencia; determinar si hay registros oficiales de cotos a nivel autonómico/local. Considerar pregunta opcional de árboles con «No lo sé» y dato claramente autodeclarado.
+7. **Pendiente — Orden útil de Mis Cotos:** ordenar arriba ubicaciones con condiciones más favorables solo cuando exista evaluación por especie, comparable, explicable y respaldada por datos suficientes. No ordenar por lluvia aislada.
+8. **Pendiente — Feedback local:** registrar especie, fecha, ubicación y los estados distintos «encontré», «busqué y no encontré» y «no busqué». El almacenamiento inicial será local; servidor homelab es una fase futura opcional.
+9. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.
 
 ## Preparar, compilar y probar
 

@@ -14,8 +14,10 @@ La app no debe fabricar datos ni presentar valores de ejemplo como reales. Si un
 - **Puntos de consulta:** el mapa permite mantener pulsado un punto o consultar la ubicación actual del dispositivo. La pantalla consulta Open-Meteo sin guardar nada automáticamente; el botón «Guardar punto» permite ponerle nombre y añadirlo a las ubicaciones monitorizadas. Se muestra el origen y, para GPS, la precisión comunicada por Android.
 - **Ubicaciones:** se pueden guardar puntos manualmente o desde una consulta del mapa/GPS. No hay un inventario oficial/verificado de cotos de toda España. El mapa muestra ubicaciones locales guardadas; no representa presencia o ausencia de setas.
 - **Predicción micológica:** no se calcula ni se muestra porcentaje de presencia. No existe aún un modelo validado por especie y región ni datos de hábitat suficientemente verificados.
-- **Catálogo:** se mantiene vacío hasta incorporar información de especies y condiciones respaldada por fuentes micológicas verificables.
-- **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS. Feedback de campo sigue pendiente.
+- **Conocimiento micológico:** [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md) recoge la evidencia localizada, sus límites y los datos que faltan por especie. Los estudios disponibles no respaldan aún reglas numéricas nacionales ni una clasificación de puntos.
+- **Hábitat y cotos:** aún no hay un catálogo nacional verificado integrado. Se investigarán fuentes oficiales de cobertura forestal; Micocyl es un ejemplo regional de montes regulados, no un catálogo nacional ni una API confirmada. Como alternativa, se podrá preguntar qué árboles observa el usuario y etiquetar la respuesta como no verificada.
+- **Orden de Mis Cotos:** pendiente de una evaluación micológica comparable por especie. No se ordenarán puntos por lluvia ni por una puntuación inventada.
+- **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS. Feedback de campo local está pendiente; sincronizar con un servidor doméstico queda para el futuro.
 - **Exportación CSV:** fuera del alcance del MVP actual.
 
 La app consulta la API Forecast de Open-Meteo (`/v1/forecast`) con `past_days=15`; no usa ya OpenWeatherMap. La respuesta de la API se valida y presenta en la pantalla, sin persistirla en Room ni ofrecer caché offline todavía.
