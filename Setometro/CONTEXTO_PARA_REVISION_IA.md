@@ -9,9 +9,26 @@ Este documento acompaña al código para que una revisión externa entienda el o
 
 ## Qué se quiere construir
 
-Setómetro debe ayudar a una persona sin conocimientos micológicos a entender si las condiciones recientes **podrían ser compatibles** con la fructificación de una especie en el lugar que ella elija. El objetivo no es ser una app meteorológica genérica ni un escaparate visual: se pretende construir una herramienta útil, transparente y progresivamente validada con fuentes y observaciones de campo. La interfaz visual actual es provisional y se quiere encargar a la IA revisora que proponga cómo mejorarla.
+Setómetro debe ayudar a una persona sin conocimientos micológicos a entender si las condiciones recientes **podrían ser compatibles** con la fructificación de una especie en el lugar que ella elija. El objetivo no es ser una app meteorológica genérica ni un escaparate visual: se pretende construir una herramienta útil, transparente y progresivamente validada con fuentes y observaciones de campo. La mejora visual también interesa, pero es secundaria y no debe desplazar el trabajo necesario para que la función micológica sea fiable.
 
 La app todavía **no evalúa la probabilidad de encontrar setas**. Actualmente obtiene tiempo por coordenadas y permite registrar observaciones. La futura evaluación necesitará combinar de forma explicable datos meteorológicos/hídricos, especie, árboles hospedadores o vegetación, estación, suelo, región y límites de cada fuente. Una evaluación por especie debe preceder a cualquier ranking de ubicaciones.
+
+## Prioridad absoluta: investigación micológica y estimaciones fiables
+
+La investigación para convertir conocimiento micológico y ecológico en una evaluación útil por especie y lugar es **la prioridad principal del proyecto y el foco número uno de la revisión externa**. La finalidad de Setómetro es traducir evidencia fiable en una estimación comprensible de cuánto concuerdan las condiciones observadas con las asociadas a la fructificación de una especie concreta. Si esta función no es científicamente defendible y validable, las mejoras de diseño, navegación, mapas, cotos, exportación y demás extras son totalmente secundarias.
+
+La IA revisora debe dedicar su mayor esfuerzo a investigar y responder:
+
+- Qué estudios de campo, series temporales, modelos de producción y fuentes micológicas de calidad existen **para cada especie**, dando prioridad a *Boletus edulis*, *Boletus pinophilus* y las demás especies incluidas en la app.
+- Qué encontraron exactamente: variables meteorológicas e hídricas, humedad y temperatura del suelo, vegetación y árboles hospedadores, suelo, estación, retardos entre lluvia y fructificación, duración de ventanas y relaciones con la producción. Distinguir resultados cuantificados de descripciones cualitativas; separar crecimiento del micelio, iniciación y desarrollo de carpóforos, producción y hallazgo por una persona.
+- En qué localidades, regiones, tipos de bosque, periodos y métodos se basan los resultados; qué incertidumbre, sesgos, tamaño de muestra y límites de extrapolación tienen. No convertir resultados de un pinar o región en una regla para toda España.
+- Qué datos observables podemos obtener de forma realista para un punto en España y con qué resolución, profundidad, cobertura, antigüedad y licencia. Comparar esos datos con las variables que los estudios realmente usaron; no asumir que lluvia/temperatura del aire sustituyen a humedad del suelo, hábitat o presencia del hospedador.
+- Si los artículos y datos permiten definir una evaluación por especie y región. Proponer cómo expresar factores favorables, desfavorables y desconocidos, y cuándo abstenerse por falta de cobertura. No llamar «probabilidad» a una puntuación o heurística sin calibración estadística.
+- Qué datos de observaciones de campo hacen falta para probar y calibrar las estimaciones (incluyendo esfuerzo y fecha de búsqueda, especie confirmada, lugar/hábitat y resultados positivos y negativos), cómo evitar sesgos y qué validación independiente permitiría afirmar que las estimaciones son fiables.
+
+El entregable prioritario de la IA debe ser un **informe de evidencia y una propuesta verificable de evaluación micológica**, con referencias primarias rastreables y una matriz por especie que indique variable, resultado/cita, ámbito, disponibilidad del dato en Setómetro, incertidumbre y uso permitido. Debe señalar explícitamente lo que no pudo verificar y distinguir «no investigado/no encontrado» de «no existe». No basta con resumir fichas divulgativas ni con enumerar variables plausibles.
+
+No inventar valores, umbrales, retardos, pesos, porcentajes, datos ni reglas para rellenar vacíos. Si la evidencia disponible no permite una estimación fiable para una especie, región o punto, recomendar qué investigación o datos faltan y que la app muestre esa limitación; no fabricar un modelo para aparentar que la función está resuelta. Solo después de resolver o acotar esta prioridad deben proponerse mejoras secundarias de interfaz o extras.
 
 ## Reglas de producto no negociables
 
@@ -94,14 +111,14 @@ Flujo habitual: `Compose screen → ViewModel/StateFlow → Repository → API o
 
 Revisar el ZIP completo y responder **primero con análisis, no modificar ni reescribir código todavía**, salvo que se le pida expresamente:
 
-1. Resumir qué hace realmente el código y contrastarlo con este documento; señalar cualquier discrepancia.
-2. Detectar errores funcionales, de arquitectura, privacidad, accesibilidad, UX, resiliencia y calidad de datos. Distinguir bugs demostrables de recomendaciones/opiniones.
-3. Comprobar la adecuación de las integraciones y licencias actuales (Open-Meteo, Nominatim/OSM), consultando fuentes oficiales vigentes y citándolas; indicar riesgos de uso/distribución.
-4. Evaluar si la selección de punto, el guardado de árboles y la búsqueda OSM son claros y correctos; proponer pruebas que demuestren el flujo end-to-end.
-5. Revisar Room v5/migraciones, integridad del feedback local, comportamiento al borrar una ubicación y cobertura de tests.
-6. Proponer una hoja de ruta pequeña y ordenada por dependencias. Para cada mejora: problema, impacto, evidencia, coste/riesgo, archivos probables y criterios verificables de aceptación.
-7. Decir qué NO se debe implementar aún por falta de evidencia/datos. No proponer scores o porcentajes artificiales ni asumir un catálogo nacional de cotos.
-8. Si recomienda una evaluación micológica, aportar antes fuentes específicas verificables por especie/región y explicar qué variables se observan, qué no se sabe y cómo validar/calibrar el resultado.
-9. Auditar también el diseño visual de toda la app y proponer una mejora integral priorizada: jerarquía, navegación, consistencia, identidad visual, legibilidad, accesibilidad, pantallas de mapa/alta/detalle/libro y estados vacíos/carga/error/sin conexión. Para cada propuesta, indicar problema, beneficio, pantallas/componentes afectados y criterios comprobables. Mantener visibles las fuentes, la incertidumbre y la ausencia de datos; no usar colores, gráficos ni etiquetas que aparenten una probabilidad o certeza que el modelo no tiene. Entregar primero el diagnóstico y la propuesta; no realizar un rediseño masivo sin aprobación del usuario.
+1. Resumir qué hace realmente el código y contrastarlo con este documento; señalar cualquier discrepancia, en especial que la función principal —estimar por especie si las condiciones del punto son compatibles con fructificación— aún no está implementada.
+2. **Prioridad máxima: investigar la evidencia micológica y ecológica necesaria para esa función.** Entregar el informe y la matriz descritos en «Prioridad absoluta», con fuentes primarias, resultados concretos y límites por especie/región. Explicar qué estimaciones son defendibles hoy, cuáles no, qué variables/datos faltan y cómo se validaría la fiabilidad. No empezar por el rediseño visual ni por extras.
+3. Detectar errores funcionales, de arquitectura, privacidad, accesibilidad, UX, resiliencia y calidad de datos. Distinguir bugs demostrables de recomendaciones/opiniones; la funcionalidad micológica y la calidad de sus datos tienen precedencia sobre asuntos secundarios.
+4. Comprobar la adecuación de las integraciones y licencias actuales (Open-Meteo, Nominatim/OSM), consultando fuentes oficiales vigentes y citándolas; indicar riesgos de uso/distribución.
+5. Evaluar si la selección de punto, el guardado de árboles y la búsqueda OSM son claros y correctos; proponer pruebas que demuestren el flujo end-to-end.
+6. Revisar Room v5/migraciones, integridad del feedback local, comportamiento al borrar una ubicación y cobertura de tests.
+7. Proponer una hoja de ruta pequeña y ordenada por dependencias. Para cada mejora: problema, impacto, evidencia, coste/riesgo, archivos probables y criterios verificables de aceptación. La investigación, implementación y validación de la evaluación micológica deben ocupar el primer lugar; interfaz, mapas, cotos, CSV y otros extras son secundarios mientras la estimación no sea fiable.
+8. Decir qué NO se debe implementar aún por falta de evidencia/datos. No proponer scores o porcentajes artificiales ni asumir un catálogo nacional de cotos.
+9. Auditar también el diseño visual de toda la app y proponer una mejora integral: jerarquía, navegación, consistencia, identidad visual, legibilidad, accesibilidad, pantallas de mapa/alta/detalle/libro y estados vacíos/carga/error/sin conexión. Es una línea secundaria: no debe presentarse como solución al objetivo central ni desplazar la investigación. Mantener visibles fuentes, incertidumbre y ausencia de datos; no usar colores, gráficos ni etiquetas que aparenten una probabilidad o certeza que el modelo no tiene. No realizar un rediseño masivo sin aprobación del usuario.
 
 Al recibir recomendaciones, el propietario del proyecto decidirá cuáles se implementan. No introducir cambios masivos, migraciones destructivas, telemetría, envío de coordenadas/feedback ni nuevas dependencias sin explicar necesidad y consecuencias.
