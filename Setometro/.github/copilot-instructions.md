@@ -32,6 +32,16 @@ Estas instrucciones se aplican al trabajo sobre este proyecto. La fuente de verd
 - Ejecutar la prueba más específica pertinente y compilar la variante afectada. Ejecutar pruebas instrumentadas si se modifica la integración Android, permisos, Room o UI.
 - No afirmar que una compilación o prueba pasó si no se ejecutó. Informar claramente de los comandos ejecutados y los bloqueos del entorno.
 
+## Ciclo obligatorio de autoauditoría antes de entregar
+
+No dar por terminada ni entregar una tarea inmediatamente después de editar. Completar siempre este ciclo, adaptando la profundidad al alcance:
+
+1. **Contrastar el resultado con la petición:** enumerar mentalmente los requisitos concretos y confirmar dónde quedó implementado cada uno. Comprobar tanto el flujo principal como estados vacíos, errores y datos ausentes que afecte el cambio.
+2. **Releer el cambio completo:** inspeccionar el diff final y el contexto de cada archivo modificado. Buscar errores de lógica/tipos, código muerto, duplicación, texto contradictorio, regresiones en comportamiento existente, cambios ajenos, secretos y efectos sobre privacidad/licencias.
+3. **Validar con evidencia:** ejecutar las pruebas más específicas y el build pertinente. Para cambios visuales, abrir la pantalla en emulador/dispositivo y revisar la interfaz renderizada (incluyendo contenido expandido, scroll y estados relevantes), no asumir que compilar equivale a que se vea bien. Para persistencia, permisos, navegación o red, verificar además el flujo de ejecución afectado cuando el entorno lo permita.
+4. **Corregir y repetir:** si una comprobación falla o revela un defecto, arreglarlo y volver a ejecutar la validación afectada. Revisar otra vez el diff después de las correcciones. Si alguna comprobación necesaria no puede hacerse, no presentar el resultado como plenamente verificado: especificar qué quedó sin comprobar y por qué.
+5. **Cerrar con un resumen honesto:** indicar qué se cambió, qué pruebas/build/validaciones visuales se ejecutaron y sus resultados; separar lo verificado de lo pendiente. No atribuir al emulador, a una prueba o a una fuente un resultado que no se observó.
+
 ## Referencia de prácticas Android
 
 Estas reglas son una síntesis original adaptada a Setómetro, no una copia de instrucciones de terceros. Se inspiran en los patrones que documenta y ejemplifica **Now in Android**, un proyecto Android de Google escrito en Kotlin y Jetpack Compose, con más de 21.000 estrellas en GitHub al consultar la referencia:
