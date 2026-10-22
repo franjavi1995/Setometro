@@ -20,6 +20,7 @@ La app no debe fabricar datos ni presentar valores de ejemplo como reales. Si un
 - **Sección Setas:** funciona como libro de conocimiento con fichas desplegables por especie, señales de hábitat/estación, factores que podrían servir a la app, incógnitas, ámbito y enlaces a las fuentes. Separa estudios científicos de fichas descriptivas/divulgativas; no inventa “condiciones ideales” numéricas ni genera una predicción.
 - **Hábitat y cotos:** aún no hay un catálogo nacional verificado integrado. El buscador usa Nominatim/OpenStreetMap solo para geocodificar nombres presentes en OSM; no se presenta como directorio oficial. Micocyl es un ejemplo regional de montes regulados, no un catálogo nacional ni una API confirmada.
 - **Orden de Mis Cotos:** pendiente de una evaluación micológica comparable por especie. No se ordenarán puntos por lluvia ni por una puntuación inventada.
+- **Mejora visual:** pendiente de una revisión integral de diseño visual, legibilidad y accesibilidad. Se ha encargado a la IA revisora que evalúe la interfaz y proponga un rediseño sin ocultar incertidumbres, fuentes ni estados de error/datos ausentes.
 - **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS.
 - **Observaciones de campo:** se pueden guardar por ubicación, solo en el dispositivo, indicando especie/no identificada, fecha, resultado, número aproximado y nota. «Busqué y no encontré» no se interpreta como ausencia. No hay sincronización con servidores.
 - **Exportación CSV:** fuera del alcance del MVP actual.

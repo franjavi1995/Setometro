@@ -9,7 +9,7 @@ Este documento acompaña al código para que una revisión externa entienda el o
 
 ## Qué se quiere construir
 
-Setómetro debe ayudar a una persona sin conocimientos micológicos a entender si las condiciones recientes **podrían ser compatibles** con la fructificación de una especie en el lugar que ella elija. El objetivo no es ser una app meteorológica genérica ni un escaparate visual: se pretende construir una herramienta útil, transparente y progresivamente validada con fuentes y observaciones de campo.
+Setómetro debe ayudar a una persona sin conocimientos micológicos a entender si las condiciones recientes **podrían ser compatibles** con la fructificación de una especie en el lugar que ella elija. El objetivo no es ser una app meteorológica genérica ni un escaparate visual: se pretende construir una herramienta útil, transparente y progresivamente validada con fuentes y observaciones de campo. La interfaz visual actual es provisional y se quiere encargar a la IA revisora que proponga cómo mejorarla.
 
 La app todavía **no evalúa la probabilidad de encontrar setas**. Actualmente obtiene tiempo por coordenadas y permite registrar observaciones. La futura evaluación necesitará combinar de forma explicable datos meteorológicos/hídricos, especie, árboles hospedadores o vegetación, estación, suelo, región y límites de cada fuente. Una evaluación por especie debe preceder a cualquier ranking de ubicaciones.
 
@@ -102,5 +102,6 @@ Revisar el ZIP completo y responder **primero con análisis, no modificar ni ree
 6. Proponer una hoja de ruta pequeña y ordenada por dependencias. Para cada mejora: problema, impacto, evidencia, coste/riesgo, archivos probables y criterios verificables de aceptación.
 7. Decir qué NO se debe implementar aún por falta de evidencia/datos. No proponer scores o porcentajes artificiales ni asumir un catálogo nacional de cotos.
 8. Si recomienda una evaluación micológica, aportar antes fuentes específicas verificables por especie/región y explicar qué variables se observan, qué no se sabe y cómo validar/calibrar el resultado.
+9. Auditar también el diseño visual de toda la app y proponer una mejora integral priorizada: jerarquía, navegación, consistencia, identidad visual, legibilidad, accesibilidad, pantallas de mapa/alta/detalle/libro y estados vacíos/carga/error/sin conexión. Para cada propuesta, indicar problema, beneficio, pantallas/componentes afectados y criterios comprobables. Mantener visibles las fuentes, la incertidumbre y la ausencia de datos; no usar colores, gráficos ni etiquetas que aparenten una probabilidad o certeza que el modelo no tiene. Entregar primero el diagnóstico y la propuesta; no realizar un rediseño masivo sin aprobación del usuario.
 
 Al recibir recomendaciones, el propietario del proyecto decidirá cuáles se implementan. No introducir cambios masivos, migraciones destructivas, telemetría, envío de coordenadas/feedback ni nuevas dependencias sin explicar necesidad y consecuencias.
