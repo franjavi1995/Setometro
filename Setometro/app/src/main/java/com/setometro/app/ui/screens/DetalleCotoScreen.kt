@@ -1,27 +1,44 @@
 package com.setometro.app.ui.screens
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.setometro.app.data.entity.Coto
+import com.setometro.app.data.entity.ObservacionCampo
 import com.setometro.app.data.model.DailyWeatherData
+import com.setometro.app.data.model.FieldObservationResult
+import com.setometro.app.data.model.ObservedSpecies
 import com.setometro.app.data.model.PointWeatherData
+import com.setometro.app.data.model.documentedObservedSpecies
 import com.setometro.app.ui.components.RainfallChartCard
 import com.setometro.app.ui.viewmodel.DetalleCotoViewModel
+import java.text.DateFormat
+import java.util.Calendar
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,6 +85,13 @@ fun DetalleCotoScreen(
                 weatherError = uiState.weatherError,
                 isLoadingWeather = uiState.isLoading,
                 onRetryWeather = viewModel::refreshData,
+                observations = uiState.observaciones,
+                isSavingObservation = uiState.isSavingObservation,
+                observationError = uiState.observationError,
+                observationSaved = uiState.observationSaved,
+                onSaveObservation = viewModel::saveObservation,
+                onClearObservationError = viewModel::clearObservationError,
+                onObservationSavedAcknowledged = viewModel::acknowledgeObservationSaved,
                 modifier = Modifier.padding(paddingValues)
             )
         }
@@ -81,8 +105,30 @@ fun CotoDetailContent(
     weatherError: String?,
     isLoadingWeather: Boolean,
     onRetryWeather: () -> Unit,
+    observations: List<ObservacionCampo>,
+    isSavingObservation: Boolean,
+    observationError: String?,
+    observationSaved: Boolean,
+    onSaveObservation: (
+        String,
+        String?,
+        FieldObservationResult,
+        Long,
+        Int?,
+        String?
+    ) -> Unit,
+    onClearObservationError: () -> Unit,
+    onObservationSavedAcknowledged: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showObservationDialog by remember { mutableStateOf(false) }
+    LaunchedEffect(observationSaved) {
+        if (observationSaved) {
+            showObservationDialog = false
+            onObservationSavedAcknowledged()
+        }
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -117,7 +163,323 @@ fun CotoDetailContent(
                 }
             }
         }
+        item {
+            FieldObservationsCard(
+                observations = observations,
+                onAddObservation = {
+                    showObservationDialog = true
+                    onClearObservationError()
+                }
+            )
+        }
     }
+
+    if (showObservationDialog) {
+        FieldObservationDialog(
+            isSaving = isSavingObservation,
+            error = observationError,
+            onDismiss = { if (!isSavingObservation) showObservationDialog = false },
+            onSave = onSaveObservation
+        )
+    }
+}
+
+@Composable
+private fun FieldObservationsCard(
+    observations: List<ObservacionCampo>,
+    onAddObservation: () -> Unit
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = "Observaciones de campo",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Registra lo que encuentres para validar futuras orientaciones. " +
+                    "Se guarda solo en este dispositivo; no se envía a ningún servidor.",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Button(onClick = onAddObservation) {
+                Text("Añadir observación")
+            }
+            if (observations.isEmpty()) {
+                Text(
+                    text = "Todavía no hay observaciones para este punto.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            } else {
+                Divider()
+                observations.forEach { observation ->
+                    ObservationSummary(observation)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ObservationSummary(observation: ObservacionCampo) {
+    val result = FieldObservationResult.values()
+        .firstOrNull { it.name == observation.resultado }
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            text = "${observation.especieNombre} · ${result?.label ?: "Resultado desconocido"}",
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        observation.nombreCientifico?.let {
+            Text(text = it, style = MaterialTheme.typography.bodySmall)
+        }
+        Text(
+            text = DateFormat.getDateTimeInstance().format(Date(observation.fechaObservacion)),
+            style = MaterialTheme.typography.bodySmall
+        )
+        observation.ejemplares?.let {
+            Text(text = "Ejemplares aproximados: $it", style = MaterialTheme.typography.bodySmall)
+        }
+        observation.nota?.let {
+            Text(text = it, style = MaterialTheme.typography.bodySmall)
+        }
+        result?.let {
+            Text(
+                text = it.explanation,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        Divider()
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FieldObservationDialog(
+    isSaving: Boolean,
+    error: String?,
+    onDismiss: () -> Unit,
+    onSave: (
+        String,
+        String?,
+        FieldObservationResult,
+        Long,
+        Int?,
+        String?
+    ) -> Unit
+) {
+    val context = LocalContext.current
+    var selectedSpecies by remember { mutableStateOf<ObservedSpecies?>(null) }
+    var speciesMenuExpanded by remember { mutableStateOf(false) }
+    var customSpecies by remember { mutableStateOf("") }
+    var selectedResult by remember { mutableStateOf<FieldObservationResult?>(null) }
+    var observedAt by remember { mutableStateOf(System.currentTimeMillis()) }
+    var specimenCount by remember { mutableStateOf("") }
+    var note by remember { mutableStateOf("") }
+
+    val speciesChoices = remember {
+        listOf(ObservedSpecies("No identificada", null)) +
+            documentedObservedSpecies +
+            ObservedSpecies("Otra especie", null)
+    }
+    val speciesName = when (selectedSpecies?.name) {
+        "No identificada" -> "No identificada"
+        "Otra especie" -> customSpecies.trim()
+        else -> selectedSpecies?.name.orEmpty()
+    }
+    val parsedCount = specimenCount.toIntOrNull()
+    val countIsValid = specimenCount.isBlank() || parsedCount != null && parsedCount > 0
+    val canSave = selectedSpecies != null &&
+        speciesName.isNotBlank() &&
+        selectedResult != null &&
+        countIsValid &&
+        !isSaving
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Nueva observación") },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 480.dp)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                    Text(
+                        "La especie y el resultado son datos que indicas tú; " +
+                            "la aplicación no verifica la identificación."
+                    )
+                    ExposedDropdownMenuBox(
+                        expanded = speciesMenuExpanded,
+                        onExpandedChange = { speciesMenuExpanded = !speciesMenuExpanded }
+                    ) {
+                        OutlinedTextField(
+                            value = selectedSpecies?.name ?: "",
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("Especie observada") },
+                            placeholder = { Text("Seleccionar") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(),
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(
+                                    expanded = speciesMenuExpanded
+                                )
+                            }
+                        )
+                        ExposedDropdownMenu(
+                            expanded = speciesMenuExpanded,
+                            onDismissRequest = { speciesMenuExpanded = false }
+                        ) {
+                            speciesChoices.forEach { species ->
+                                DropdownMenuItem(
+                                    text = {
+                                        Column {
+                                            Text(species.name)
+                                            species.scientificName?.let {
+                                                Text(it, style = MaterialTheme.typography.bodySmall)
+                                            }
+                                        }
+                                    },
+                                    onClick = {
+                                        selectedSpecies = species
+                                        speciesMenuExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    if (selectedSpecies?.name == "Otra especie") {
+                        OutlinedTextField(
+                            value = customSpecies,
+                            onValueChange = { customSpecies = it.take(100) },
+                            label = { Text("Nombre indicado") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+                    }
+                    Text("Resultado de la visita", fontWeight = FontWeight.SemiBold)
+                    FieldObservationResult.values().forEach { result ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    selectedResult = result
+                                    if (result != FieldObservationResult.FOUND) {
+                                        specimenCount = ""
+                                    }
+                                },
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = selectedResult == result,
+                                onClick = { selectedResult = result }
+                            )
+                            Column {
+                                Text(result.label)
+                                Text(
+                                    result.explanation,
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                        }
+                    }
+                    OutlinedButton(
+                        onClick = {
+                            val current = Calendar.getInstance().apply {
+                                timeInMillis = observedAt
+                            }
+                            DatePickerDialog(
+                                context,
+                                { _, year, month, day ->
+                                    current.set(Calendar.YEAR, year)
+                                    current.set(Calendar.MONTH, month)
+                                    current.set(Calendar.DAY_OF_MONTH, day)
+                                    TimePickerDialog(
+                                        context,
+                                        { _, hourOfDay, minute ->
+                                            current.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                                            current.set(Calendar.MINUTE, minute)
+                                            current.set(Calendar.SECOND, 0)
+                                            current.set(Calendar.MILLISECOND, 0)
+                                            observedAt = current.timeInMillis
+                                        },
+                                        current.get(Calendar.HOUR_OF_DAY),
+                                        current.get(Calendar.MINUTE),
+                                        true
+                                    ).show()
+                                },
+                                current.get(Calendar.YEAR),
+                                current.get(Calendar.MONTH),
+                                current.get(Calendar.DAY_OF_MONTH)
+                            ).show()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("Fecha y hora: ${DateFormat.getDateTimeInstance().format(Date(observedAt))}")
+                    }
+                    if (selectedResult == FieldObservationResult.FOUND) {
+                        OutlinedTextField(
+                            value = specimenCount,
+                            onValueChange = { specimenCount = it.filter(Char::isDigit).take(5) },
+                            label = { Text("Número aproximado de ejemplares (opcional)") },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                            isError = !countIsValid
+                        )
+                        if (!countIsValid) {
+                            Text(
+                                "Indica un número mayor que cero o deja el campo vacío.",
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                    OutlinedTextField(
+                        value = note,
+                        onValueChange = { note = it.take(500) },
+                        label = { Text("Nota (opcional)") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 80.dp),
+                        minLines = 2
+                    )
+                    if (error != null) {
+                        Text(error, color = MaterialTheme.colorScheme.error)
+                    }
+            }
+        },
+        confirmButton = {
+                TextButton(
+                    enabled = canSave,
+                    onClick = {
+                        val species = selectedSpecies ?: return@TextButton
+                        val result = selectedResult ?: return@TextButton
+                        onSave(
+                            speciesName,
+                            species.scientificName,
+                            result,
+                            observedAt,
+                            parsedCount,
+                            note
+                        )
+                    }
+                ) {
+                    Text(if (isSaving) "Guardando…" else "Guardar")
+                }
+        },
+        dismissButton = {
+                TextButton(onClick = onDismiss, enabled = !isSaving) {
+                    Text("Cancelar")
+                }
+        }
+    )
 }
 
 @Composable

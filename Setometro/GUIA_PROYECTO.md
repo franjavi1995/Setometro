@@ -24,7 +24,7 @@ Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que
 | Especies y hábitat | El catálogo está vacío hasta reunir especies, hábitats y requisitos respaldados por fuentes verificables. |
 | Probabilidad de presencia | Desactivada: no hay un modelo calibrado y evidencia suficientes para dar porcentajes fiables. |
 | Cache/offline | La respuesta meteorológica no se persiste ni hay caché offline todavía. |
-| Feedback de campo | Pendiente; la propuesta es guardarlo localmente y distinguir «encontré», «no encontré» y «no busqué». |
+| Feedback de campo | Implementado en el detalle de cada ubicación. Guarda localmente especie declarada/no identificada, fecha, resultado, cantidad aproximada y nota; distingue «encontré», «busqué y no encontré» y «no busqué». No se sincroniza y el resultado negativo no prueba ausencia. |
 | CSV | Aplazado. |
 
 La investigación inicial y el mapa de evidencia, incluyendo límites por especie, datos disponibles, retos de cotos/hábitat y requisitos para ordenar ubicaciones, está en [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md). Incluye estudios españoles para *B. edulis* y *L. deliciosus* y fichas descriptivas de sociedades micológicas, separadas por nivel de evidencia. No se han establecido umbrales micológicos numéricos ni un catálogo nacional de cotos; Micocyl es un ejemplo regional por verificar para reutilización.
@@ -63,7 +63,7 @@ Flujo de datos: `pantalla Compose → ViewModel/StateFlow → Repository → API
 5. **En curso — Mapa de conocimiento micológico:** consultar [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md); hay evidencia localizada sobre producción en pinares españoles para *Boletus edulis* y *Lactarius deliciosus*, pero no reglas numéricas generales. Completar fichas de especies sin extrapolar.
 6. **Pendiente — Datos de hábitat y cotos:** comprobar SIOSE/MFE/IFN, resolución y licencia; determinar si hay registros oficiales de cotos a nivel autonómico/local. Considerar pregunta opcional de árboles con «No lo sé» y dato claramente autodeclarado.
 7. **Pendiente — Orden útil de Mis Cotos:** ordenar arriba ubicaciones con condiciones más favorables solo cuando exista evaluación por especie, comparable, explicable y respaldada por datos suficientes. No ordenar por lluvia aislada.
-8. **Pendiente — Feedback local:** registrar especie, fecha, ubicación y los estados distintos «encontré», «busqué y no encontré» y «no busqué». El almacenamiento inicial será local; servidor homelab es una fase futura opcional.
+8. **Hecho — Feedback local inicial:** desde el detalle de una ubicación se registran observaciones locales con especie o “no identificada”, fecha, estado de búsqueda, cantidad aproximada y nota. La migración Room conserva el registro aunque luego se elimine la ubicación guardada; no se envían datos a ningún servicio. El homelab sigue siendo futuro y optativo.
 9. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.
 
 ## Preparar, compilar y probar

@@ -172,7 +172,7 @@ Un “no encontré” es una observación de búsqueda, no una prueba de ausenci
 5. Investigar e integrar hábitat por coordenada desde SIOSE/MFE/IFN u otra fuente oficial, con metadatos de fecha/resolución/licencia. Comparar clasificación remota con inspección manual de árbol.
 6. Determinar si se puede mantener un catálogo fiable de cotos mediante las administraciones competentes; no inventar ni presentar listados parciales como cobertura nacional.
 7. Diseñar la pregunta opcional de árboles al seleccionar un punto y cómo editar/refrescar la respuesta, conservándola como dato declarado.
-8. Implementar feedback local con los tres estados distintos; diseñar un esquema migrable para sincronización optativa futura con homelab, todavía sin servidor.
+8. **Hecho — Feedback local inicial:** desde el detalle del punto se guarda especie o “no identificada”, fecha/hora, resultado (“encontré”, “busqué y no encontré”, “no busqué”), cantidad aproximada y nota. Queda en Room en el dispositivo y no se sincroniza. El nombre de especie lo aporta la persona usuaria y no se valida automáticamente. La eliminación del punto conserva la observación con su nombre y coordenadas guardadas; la vinculación a la ubicación se pone a nula.
 9. Definir y validar la evaluación explicable por especie. Solo después usarla para ordenar “Mis Cotos”, con comparaciones homogéneas, frescura de datos y estado “insuficiente” explícito.
 10. Validar contra observaciones de campo registradas con esfuerzo de búsqueda, fechas, especie y localización. No publicar probabilidad estadística hasta que la validación y calibración lo permitan.
 
@@ -185,3 +185,4 @@ Un “no encontré” es una observación de búsqueda, no una prueba de ausenci
 ## Historial de versiones del documento
 
 - **2026-10-22:** mapa inicial. Evidencia climática localizada principalmente para producción en pinares españoles de *B. edulis* y *L. deliciosus*; se añadieron fichas descriptivas micológicas para varias especies, con su nivel de evidencia explícito. Añadidos retos de cobertura de datos, cotos, identificación de árboles, ordenación del dashboard y feedback local/futuro homelab.
+- **2026-10-22:** primera función de validación de campo implementada localmente, con estados de resultado diferenciados y sin sincronización. La evaluación micológica por especie, la selección de árboles y la ordenación por condiciones siguen pendientes de datos/reglas verificables.

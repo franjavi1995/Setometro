@@ -4,6 +4,7 @@ import android.content.Context
 import com.setometro.app.data.dao.CotoDao
 import com.setometro.app.data.dao.RegistroDiarioDao
 import com.setometro.app.data.dao.EspecieSetaDao
+import com.setometro.app.data.dao.ObservacionCampoDao
 import com.setometro.app.data.database.SetometroDatabase
 import com.setometro.app.data.preferences.AppPreferences
 import dagger.Module
@@ -37,6 +38,11 @@ object DatabaseModule {
     fun provideEspecieSetaDao(database: SetometroDatabase): EspecieSetaDao {
         return database.especieSetaDao()
     }
+
+    @Provides
+    fun provideObservacionCampoDao(database: SetometroDatabase): ObservacionCampoDao {
+        return database.observacionCampoDao()
+    }
     
     @Provides
     @Singleton
@@ -60,6 +66,14 @@ object DatabaseModule {
         especieSetaDao: EspecieSetaDao
     ): com.setometro.app.data.repository.EspecieSetaRepository {
         return com.setometro.app.data.repository.EspecieSetaRepository(especieSetaDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObservacionCampoRepository(
+        observacionCampoDao: ObservacionCampoDao
+    ): com.setometro.app.data.repository.ObservacionCampoRepository {
+        return com.setometro.app.data.repository.ObservacionCampoRepository(observacionCampoDao)
     }
     
     @Provides

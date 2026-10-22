@@ -17,7 +17,8 @@ La app no debe fabricar datos ni presentar valores de ejemplo como reales. Si un
 - **Conocimiento micológico:** [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md) recoge la evidencia localizada, sus límites y los datos que faltan por especie. Los estudios disponibles no respaldan aún reglas numéricas nacionales ni una clasificación de puntos.
 - **Hábitat y cotos:** aún no hay un catálogo nacional verificado integrado. Se investigarán fuentes oficiales de cobertura forestal; Micocyl es un ejemplo regional de montes regulados, no un catálogo nacional ni una API confirmada. Como alternativa, se podrá preguntar qué árboles observa el usuario y etiquetar la respuesta como no verificada.
 - **Orden de Mis Cotos:** pendiente de una evaluación micológica comparable por especie. No se ordenarán puntos por lluvia ni por una puntuación inventada.
-- **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS. Feedback de campo local está pendiente; sincronizar con un servidor doméstico queda para el futuro.
+- **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS.
+- **Observaciones de campo:** se pueden guardar por ubicación, solo en el dispositivo, indicando especie/no identificada, fecha, resultado, número aproximado y nota. «Busqué y no encontré» no se interpreta como ausencia. No hay sincronización con servidores.
 - **Exportación CSV:** fuera del alcance del MVP actual.
 
 La app consulta la API Forecast de Open-Meteo (`/v1/forecast`) con `past_days=15`; no usa ya OpenWeatherMap. La respuesta de la API se valida y presenta en la pantalla, sin persistirla en Room ni ofrecer caché offline todavía.
