@@ -17,7 +17,7 @@ Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que
 | Área | Estado |
 | --- | --- |
 | Navegación Compose | Funcionan las pestañas principales. |
-| Ubicaciones | Permite guardar ubicaciones manualmente o desde una consulta GPS/mapa, ver el origen/precisión de coordenadas y abrir detalles. No hay un catálogo oficial de cotos de toda España. El bosque indicado no se considera verificado. |
+| Ubicaciones | El alta permite buscar un lugar/coto en OpenStreetMap o tocar el mapa para elegir coordenadas; ya no pide latitud/longitud manual. Pregunta los árboles observados (multi-selección y «No lo sé»), guardándolos como dato declarado, no verificado. La búsqueda OSM no es un catálogo oficial ni completo de cotos. |
 | Meteorología | El detalle consulta Open-Meteo usando las coordenadas guardadas: condiciones actuales y datos diarios de los 15 días anteriores. Los errores se presentan en pantalla. |
 | Naturaleza de meteorología | Son datos de modelo para la cuadrícula que devuelve el proveedor, no mediciones de estación en el punto. La app muestra coordenadas del modelo, elevación modelada, zona horaria y hora de consulta. |
 | Mapa y GPS | Muestra ubicaciones locales guardadas con marcadores neutros. Mantener pulsado un punto abre una consulta temporal de Open-Meteo; el botón GPS solicita permiso bajo demanda, informa la precisión del dispositivo y consulta sin guardar automáticamente. «Guardar punto» añade el lugar con nombre a las ubicaciones monitorizadas. |
@@ -28,6 +28,8 @@ Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que
 | CSV | Aplazado. |
 
 La investigación inicial y el mapa de evidencia, incluyendo límites por especie, datos disponibles, retos de cotos/hábitat y requisitos para ordenar ubicaciones, está en [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md). Incluye estudios españoles para *B. edulis* y *L. deliciosus* y fichas descriptivas de sociedades micológicas, separadas por nivel de evidencia. No se han establecido umbrales micológicos numéricos ni un catálogo nacional de cotos; Micocyl es un ejemplo regional por verificar para reutilización.
+
+El buscador envía el texto introducido a Nominatim/OpenStreetMap solo al pulsar Buscar; las solicitudes están limitadas a una por segundo. Los resultados son lugares geográficos del mapa colaborativo, no cotos verificados ni un registro oficial. La persona usuaria debe revisar y fijar la ubicación en el mapa. Se atribuye a OpenStreetMap contributors.
 
 ## API meteorológica
 
@@ -61,7 +63,7 @@ Flujo de datos: `pantalla Compose → ViewModel/StateFlow → Repository → API
 3. **Hecho — Eliminar salidas ficticias:** retiradas la generación meteorológica aleatoria, los fallbacks de muestra y el cálculo de porcentajes no validado mostrado por la UI. La migración de Room limpia el clima/probabilidades heredados, elimina especies de muestra y puntos de demostración conocidos, conservando ubicaciones personalizadas.
 4. **Hecho — Consultar puntos indicados:** el mapa permite seleccionar un punto con pulsación larga o solicitar ubicación GPS bajo demanda. Ambas opciones muestran la precisión/procedencia conocida, consultan la misma API real por coordenadas y no guardan automáticamente. «Guardar punto» añade un nombre y lo incorpora a las ubicaciones monitorizadas.
 5. **En curso — Mapa de conocimiento micológico:** consultar [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md); hay evidencia localizada sobre producción en pinares españoles para *Boletus edulis* y *Lactarius deliciosus*, pero no reglas numéricas generales. Completar fichas de especies sin extrapolar.
-6. **Pendiente — Datos de hábitat y cotos:** comprobar SIOSE/MFE/IFN, resolución y licencia; determinar si hay registros oficiales de cotos a nivel autonómico/local. Considerar pregunta opcional de árboles con «No lo sé» y dato claramente autodeclarado.
+6. **En curso — Datos de hábitat y cotos:** el alta recoge árboles declarados por la persona usuaria y ofrece búsqueda de topónimos/cotos presentes en OpenStreetMap mediante Nominatim. No verificar la cobertura ni la oficialidad de los resultados. Pendiente comprobar SIOSE/MFE/IFN, resolución y licencia; buscar registros oficiales de cotos autonómicos/locales.
 7. **Pendiente — Orden útil de Mis Cotos:** ordenar arriba ubicaciones con condiciones más favorables solo cuando exista evaluación por especie, comparable, explicable y respaldada por datos suficientes. No ordenar por lluvia aislada.
 8. **Hecho — Feedback local inicial:** desde el detalle de una ubicación se registran observaciones locales con especie o “no identificada”, fecha, estado de búsqueda, cantidad aproximada y nota. La migración Room conserva el registro aunque luego se elimine la ubicación guardada; no se envían datos a ningún servicio. El homelab sigue siendo futuro y optativo.
 9. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.

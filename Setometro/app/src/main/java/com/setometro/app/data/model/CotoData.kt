@@ -8,8 +8,8 @@ data class CotoData(
     val longitud: Double,
     val altitud: Double,
     val descripcion: String,
-    val caracteristicas: String
+    val caracteristicas: String,
+    val fuenteCoordenadas: String = "MAP"
 )
-
 
 

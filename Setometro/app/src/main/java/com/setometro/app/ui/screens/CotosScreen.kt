@@ -103,7 +103,7 @@ fun EmptyCotosScreen() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Añade un punto manualmente. La app no dispone de un inventario verificado de cotos.",
+            text = "Añade un punto buscando un lugar o tocando el mapa. La app no dispone de un inventario verificado de cotos.",
             style = MaterialTheme.typography.bodyMedium
         )
     }
