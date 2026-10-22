@@ -4,6 +4,8 @@
 **Fecha de revisión:** 22 de octubre de 2026.  
 **Objetivo de producto:** que Setómetro traduzca datos fiables de un punto y conocimiento micológico trazable a una orientación comprensible sobre las condiciones de fructificación de especies silvestres, sin exigir al usuario que conozca sus requisitos.
 
+La pestaña **Setas** de la aplicación expone una primera versión de este mapa como libro de conocimiento: muestra por especie la evidencia encontrada, los factores que podrían servir a una evaluación futura, el ámbito de las fuentes, lo desconocido y enlaces para consultar las referencias. No afirma que estos sean requisitos ideales universales ni los utiliza aún para calcular condiciones.
+
 ## Reglas de evidencia
 
 Este documento separa lo demostrado de lo pendiente. No convierte calendarios populares, observaciones aisladas ni resultados de una comarca en umbrales para toda España.
@@ -187,5 +189,6 @@ Un “no encontré” es una observación de búsqueda, no una prueba de ausenci
 - **2026-10-22:** mapa inicial. Evidencia climática localizada principalmente para producción en pinares españoles de *B. edulis* y *L. deliciosus*; se añadieron fichas descriptivas micológicas para varias especies, con su nivel de evidencia explícito. Añadidos retos de cobertura de datos, cotos, identificación de árboles, ordenación del dashboard y feedback local/futuro homelab.
 - **2026-10-22:** primera función de validación de campo implementada localmente, con estados de resultado diferenciados y sin sincronización. La evaluación micológica por especie, la selección de árboles y la ordenación por condiciones siguen pendientes de datos/reglas verificables.
 - **2026-10-22:** alta de punto actualizada: búsqueda manual bajo demanda de nombres en Nominatim/OpenStreetMap (España), selección/ajuste en mapa y pregunta requerida de árboles autodeclarados. La búsqueda no acredita que un resultado sea un coto legal o vigente.
+- **2026-10-22:** primera versión del libro de conocimiento integrada en la pestaña Setas. Nueve fichas enlazan a las fuentes y distinguen factores cualitativos de variables que carecen de umbrales; no producen puntuación ni predicción.
 
 La búsqueda Nominatim usa `https://nominatim.openstreetmap.org/search` bajo demanda, limitada a España, y respeta un intervalo mínimo de una solicitud por segundo. El texto de búsqueda se envía al servicio; la ubicación actual del dispositivo no se transmite. Un resultado vacío significa que el servicio no devolvió coincidencias, no que el lugar no exista.

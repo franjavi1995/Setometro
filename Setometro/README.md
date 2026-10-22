@@ -17,6 +17,7 @@ La app no debe fabricar datos ni presentar valores de ejemplo como reales. Si un
 - **Ubicaciones:** se pueden guardar puntos desde el mapa de alta o desde una consulta GPS/mapa. No hay un inventario oficial/verificado de cotos de toda España. El mapa muestra ubicaciones locales guardadas; no representa presencia o ausencia de setas.
 - **Predicción micológica:** no se calcula ni se muestra porcentaje de presencia. No existe aún un modelo validado por especie y región ni datos de hábitat suficientemente verificados.
 - **Conocimiento micológico:** [MAPA_CONOCIMIENTO_MICOLOGICO.md](./MAPA_CONOCIMIENTO_MICOLOGICO.md) recoge la evidencia localizada, sus límites y los datos que faltan por especie. Los estudios disponibles no respaldan aún reglas numéricas nacionales ni una clasificación de puntos.
+- **Sección Setas:** funciona como libro de conocimiento con fichas desplegables por especie, señales de hábitat/estación, factores que podrían servir a la app, incógnitas, ámbito y enlaces a las fuentes. Separa estudios científicos de fichas descriptivas/divulgativas; no inventa “condiciones ideales” numéricas ni genera una predicción.
 - **Hábitat y cotos:** aún no hay un catálogo nacional verificado integrado. El buscador usa Nominatim/OpenStreetMap solo para geocodificar nombres presentes en OSM; no se presenta como directorio oficial. Micocyl es un ejemplo regional de montes regulados, no un catálogo nacional ni una API confirmada.
 - **Orden de Mis Cotos:** pendiente de una evaluación micológica comparable por especie. No se ordenarán puntos por lluvia ni por una puntuación inventada.
 - **GPS y selección de punto en mapa:** implementados bajo demanda; el permiso solo se solicita al usar GPS.
@@ -39,6 +40,8 @@ Open-Meteo requiere atribución **CC BY 4.0** junto a los datos. Su API gratuita
 El flujo esperado es `pantalla Compose → ViewModel → Repository → API o Room`. El detalle consulta el tiempo al abrirlo. Las actualizaciones periódicas de tiempo se han desactivado.
 
 El código está en `app/src/main/java/com/setometro/app/`. La arquitectura, los comandos de desarrollo y los pendientes están en [GUIA_PROYECTO.md](./GUIA_PROYECTO.md); las pautas para cambios con Copilot están en [.github/copilot-instructions.md](./.github/copilot-instructions.md).
+
+Para compartir el proyecto con otra IA, consultar [CONTEXTO_PARA_REVISION_IA.md](./CONTEXTO_PARA_REVISION_IA.md), que resume el objetivo, estado, límites de datos, pendientes y preguntas de revisión. El ZIP de entrega debe excluir `build/`, `.gradle/`, `.idea/`, `local.properties`, APKs y credenciales.
 
 ## Compilar y probar
 

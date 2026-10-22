@@ -2,6 +2,8 @@
 
 Esta guía refleja el código actual del MVP de la versión 2. La raíz Gradle es esta carpeta; `app/build/` contiene artefactos generados, no fuentes.
 
+Para una revisión externa completa del código y la finalidad del producto, usar también [CONTEXTO_PARA_REVISION_IA.md](./CONTEXTO_PARA_REVISION_IA.md).
+
 ## Objetivo y reglas del producto
 
 Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que indique la persona y, en el futuro, contextualizarlas con hábitat y conocimiento micológico fiable.
@@ -21,7 +23,7 @@ Setómetro debe ayudar a consultar las condiciones meteorológicas del punto que
 | Meteorología | El detalle consulta Open-Meteo usando las coordenadas guardadas: condiciones actuales y datos diarios de los 15 días anteriores. Los errores se presentan en pantalla. |
 | Naturaleza de meteorología | Son datos de modelo para la cuadrícula que devuelve el proveedor, no mediciones de estación en el punto. La app muestra coordenadas del modelo, elevación modelada, zona horaria y hora de consulta. |
 | Mapa y GPS | Muestra ubicaciones locales guardadas con marcadores neutros. Mantener pulsado un punto abre una consulta temporal de Open-Meteo; el botón GPS solicita permiso bajo demanda, informa la precisión del dispositivo y consulta sin guardar automáticamente. «Guardar punto» añade el lugar con nombre a las ubicaciones monitorizadas. |
-| Especies y hábitat | El catálogo está vacío hasta reunir especies, hábitats y requisitos respaldados por fuentes verificables. |
+| Especies y hábitat | La pestaña Setas contiene un libro estático de conocimiento para nueve especies, con evidencia, ámbito, factores relevantes, datos desconocidos y enlaces a las fuentes. No es un catálogo de predicción: las tablas numéricas heredadas de Room siguen vacías y no se aplican requisitos cuantitativos. |
 | Probabilidad de presencia | Desactivada: no hay un modelo calibrado y evidencia suficientes para dar porcentajes fiables. |
 | Cache/offline | La respuesta meteorológica no se persiste ni hay caché offline todavía. |
 | Feedback de campo | Implementado en el detalle de cada ubicación. Guarda localmente especie declarada/no identificada, fecha, resultado, cantidad aproximada y nota; distingue «encontré», «busqué y no encontré» y «no busqué». No se sincroniza y el resultado negativo no prueba ausencia. |
@@ -48,7 +50,7 @@ El código Kotlin está bajo `app/src/main/java/com/setometro/app/`.
 | `ui/screens/` | Interfaz Compose y estados visibles. |
 | `ui/viewmodel/` | Estado observable y acciones de pantalla. |
 | `navigation/` | Rutas de navegación. |
-| `data/api/`, `data/model/` | Retrofit y modelos de respuesta Open-Meteo. |
+| `data/api/`, `data/model/` | Retrofit, modelos de respuesta meteorológica/geográfica y fichas curadas del libro micológico. |
 | `data/repository/` | Consulta, validación y mapeo de datos remotos/locales. |
 | `data/entity/`, `data/dao/`, `data/database/` | Persistencia Room de ubicaciones y datos locales. |
 | `data/preferences/` | Preferencias de usuario. |
@@ -66,7 +68,8 @@ Flujo de datos: `pantalla Compose → ViewModel/StateFlow → Repository → API
 6. **En curso — Datos de hábitat y cotos:** el alta recoge árboles declarados por la persona usuaria y ofrece búsqueda de topónimos/cotos presentes en OpenStreetMap mediante Nominatim. No verificar la cobertura ni la oficialidad de los resultados. Pendiente comprobar SIOSE/MFE/IFN, resolución y licencia; buscar registros oficiales de cotos autonómicos/locales.
 7. **Pendiente — Orden útil de Mis Cotos:** ordenar arriba ubicaciones con condiciones más favorables solo cuando exista evaluación por especie, comparable, explicable y respaldada por datos suficientes. No ordenar por lluvia aislada.
 8. **Hecho — Feedback local inicial:** desde el detalle de una ubicación se registran observaciones locales con especie o “no identificada”, fecha, estado de búsqueda, cantidad aproximada y nota. La migración Room conserva el registro aunque luego se elimine la ubicación guardada; no se envían datos a ningún servicio. El homelab sigue siendo futuro y optativo.
-9. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.
+9. **Hecho — Libro de conocimiento inicial:** la pestaña Setas muestra fichas desplegables de nueve especies basadas en el mapa de conocimiento. Cada ficha expone observaciones, factores que podrían interesar a la app, límites/incógnitas, ámbito y enlaces a las fuentes. No se presentan como “ideales” ni se usan para predecir hasta disponer de reglas suficientemente cuantificadas y validadas.
+10. **En curso — Validación completa:** pruebas unitarias y APK debug pasan; se comprobó GPS, consulta meteorológica real, guardado y migración Room en emulador. Falta cubrir de forma automatizada los nuevos flujos, los errores/offline y las rutas de permiso denegado.
 
 ## Preparar, compilar y probar
 
